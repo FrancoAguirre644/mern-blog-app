@@ -2,20 +2,12 @@ import mongoose from 'mongoose';
 
 const URI = process.env.MONGODB_URL;
 
-/*
 mongoose.connect(`${URI}`, {
     useCreateIndex: true,
-    useFind
-}, (err) => {
-    if(err) throw err;
-    console.log('MongoDb connection');
-})
-
-*/
-
-mongoose.connect(`${URI}`, {
-
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 }, (err) => {
     if (err) throw err;
-    console.log('MongoDB connection.');
-})
+    console.log('Mongodb connection.')
+});
