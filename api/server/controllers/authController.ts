@@ -56,24 +56,17 @@ const authController = {
 
             if (!newUser) return res.status(400).json({ msg: "Invalid authentication." });
 
-            const user = new Users(newUser);
+            const user = await Users.findOne({ account: newUser.account });
+            if (user) return res.status(400).json({ msg: "This user already have an account." })
+            
+            const new_user = new Users(newUser);
 
-            await user.save();
+            await new_user.save();
 
             res.json({ msg: "Account has been activated!", token: active_token });
 
         } catch (err: any) {
-
-            let errMsg;
-
-            if (err.code === 11000) {
-                errMsg = Object.keys(err.keyValue)[0] + " already exists."
-            } else {
-                let name = Object.keys(err.errors)[0]
-                errMsg = err.errors[`${name}`].message
-            }
-
-            return res.status(500).json({ msg: errMsg })
+            return res.status(500).json({ msg: err.message })
         }
     },
     login: async (req: Request, res: Response) => {

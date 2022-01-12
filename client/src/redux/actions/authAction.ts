@@ -13,10 +13,7 @@ export const login = (userLogin: IUserLogin) => async (dispatch: Dispatch<IAuthT
 
         dispatch({
             type: AUTH,
-            payload: {
-                token: res.data.access_token,
-                user: res.data.user,
-            }
+            payload: res.data
         });
 
         dispatch({ type: ALERT, payload: { success: res.data.msg } });
@@ -45,7 +42,7 @@ export const register = (userRegister: IUserRegister) => async (dispatch: Dispat
 
         console.log(res);
 
-        dispatch({ type: ALERT, payload: { success: "Register success!" } });
+        dispatch({ type: ALERT, payload: { success: res.data.msg } });
 
     } catch (error: any) {
         dispatch({ type: ALERT, payload: { errors: error.response.data.msg } });

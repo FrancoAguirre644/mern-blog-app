@@ -14,8 +14,11 @@ code {
     monospace;
 }
 
-/****************** AUTH PAGE *****************/
+/****************** AUTH PAGE ****************/
 @import url('./auth.css');
 
 /****************** LOADING ******************/
 @import url('./loading.css');
+
+/****************** ALERT ********************/
+@import url('./alert.css');

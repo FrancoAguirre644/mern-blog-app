@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Alert from './components/alert/Alert';
+import { Alert } from './components/alert/Alert';
 import Header from './components/global/Header';
 import PageRender from './PageRender';
 
