@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/actions/authAction';
 
 const LoginPass = () => {
 
@@ -8,13 +10,20 @@ const LoginPass = () => {
 
     const [typePass, setTypePass] = useState(false);
 
+    const dispatch = useDispatch();
+
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
         setUserLogin({ ...userLogin, [name]: value });
     }
 
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        dispatch(login(userLogin));
+    }
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="form-group mb-3">
                 <label htmlFor="account" className='form-label'>Email / Phone number</label>
                 <input type="text" className='form-control' id="account"

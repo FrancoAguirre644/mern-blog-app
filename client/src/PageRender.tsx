@@ -18,8 +18,6 @@ const PageRender = () => {
 
     const { page, slug }: IParams = useParams();
 
-    console.log(page)
-
     let name = '';
 
     if(page) {
