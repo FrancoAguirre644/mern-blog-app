@@ -29,3 +29,6 @@ code {
 
 /****************** ALERT ********************/
 @import url('./alert.css');
+
+/****************** PROFILE ******************/
+@import url('./profile.css');
