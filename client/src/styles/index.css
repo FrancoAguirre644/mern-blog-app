@@ -32,3 +32,6 @@ code {
 
 /****************** PROFILE ******************/
 @import url('./profile.css');
+
+/****************** CATEGORY ******************/
+@import url('./category.css');

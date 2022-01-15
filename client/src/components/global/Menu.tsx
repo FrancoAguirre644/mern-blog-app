@@ -38,6 +38,14 @@ const Menu = () => {
             }
 
             {
+                auth.user?.role === 'admin' && (
+                    <li>
+                        <Link to={`nav-item ${isActive('/category')}`} className='nav-link'>Category</Link>
+                    </li>
+                )
+            }
+
+            {
                 auth.user && (
                     <li className="nav-item dropdown">
                         <span className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
