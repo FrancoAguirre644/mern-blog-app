@@ -41,8 +41,6 @@ export const register = (userRegister: IUserRegister) => async (dispatch: Dispat
 
         const res = await postAPI('register', userRegister);
 
-        console.log(res);
-
         dispatch({ type: ALERT, payload: { success: res.data.msg } });
 
     } catch (error: any) {

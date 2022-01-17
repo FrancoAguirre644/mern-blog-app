@@ -9,7 +9,7 @@ router.route('/categories')
     .post(auth, categoryController.createCategory)
 
 router.route('/categories/:id')
-    .put(auth, categoryController.updateCategory)
+    .patch(auth, categoryController.updateCategory)
     .delete(auth, categoryController.deleteCategory)
 
 export default router; 
