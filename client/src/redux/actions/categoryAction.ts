@@ -52,7 +52,7 @@ export const updateCategory = (data: ICategory, token: string) => async (dispatc
             payload: data
         })
 
-        const res = await patchAPI(`categories/${data._id}`, { name: data.name }, token);
+        await patchAPI(`categories/${data._id}`, { name: data.name }, token);
 
         dispatch({ type: ALERT, payload: { loading: false } });
 
@@ -68,7 +68,7 @@ export const deleteCategory = (id: String, token: string) => async (dispatch: Di
 
         dispatch({ type: DELETE_CATEGORY, payload: id });
 
-        const res = await deleteAPI(`categories/${id}`, token);
+        await deleteAPI(`categories/${id}`, token);
 
         dispatch({ type: ALERT, payload: { loading: false } });
 
