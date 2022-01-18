@@ -5,7 +5,7 @@ const blogSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId, 
         ref: 'user'
     },
-    name: {
+    title: {
         type: String,
         required: true,
         trim: true,
@@ -16,7 +16,6 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        minLength: 2000,
     },
     description: {
         type: String,

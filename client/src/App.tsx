@@ -5,6 +5,7 @@ import { Alert } from './components/alert/Alert';
 import Header from './components/global/Header';
 import PageRender from './PageRender';
 import { refreshToken } from './redux/actions/authAction';
+import { getHomeBlogs } from './redux/actions/blogAction';
 import { getCategories } from './redux/actions/categoryAction';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
   useEffect(() => {
     dispatch(refreshToken());
     dispatch(getCategories());
+    dispatch(getHomeBlogs());
   }, [dispatch]);
 
   return (
