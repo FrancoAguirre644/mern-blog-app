@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { IReqAuth } from "../config/interfaces";
 import Blogs from '../models/blogModel';
 
@@ -87,6 +87,18 @@ const blogController = {
             return res.status(500).json({ msg: err.message });
         }
     },
+    getBlog: async (req: Request, res: Response) => {
+        try {
+            const blog = await Blogs.findOne({ _id: req.params.id }).populate("user", "-password");
+
+            if (!blog) return res.status(400).json({ msg: "Blog does not exist." });
+
+            return res.json(blog);
+
+        } catch (err: any) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }
 }
 
 export default blogController;
