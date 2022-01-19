@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { showErrMsg } from '../../components/alert/Alert';
+import DisplayBlog from '../../components/blog/DisplayBlog';
+import Loading from '../../components/global/Loading';
 import { IBlog } from '../../interfaces/IBlog';
 import { IParams } from '../../interfaces/IParams';
 import { getAPI } from '../../utils/fetchData';
@@ -27,11 +29,17 @@ const DetailBlog = () => {
                 setLoading(false);
             })
 
+        return () => setBlog(undefined);
+
     }, [id]);
+
+    if(loading) return <Loading />;
 
     return (
         <div className='my-4'>
-            { error && showErrMsg(error) }
+            {error && showErrMsg(error)}
+
+            {blog && <DisplayBlog blog={blog} />}
         </div>
     );
 };
