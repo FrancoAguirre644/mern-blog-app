@@ -1,9 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootStore } from '../../interfaces/global';
+import { IUser } from '../../interfaces/IUser';
+import { getUserInfo } from '../../redux/actions/profileAction';
+import Loading from '../alert/Loading';
 
-const OtherInfo = () => {
+interface IProps {
+    id: string
+}
+
+const OtherInfo: React.FC<IProps> = ({ id }) => {
+
+    const [other, setOther] = useState<IUser>();
+
+    const { otherInfo } = useSelector((state: RootStore) => state);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!id) return;
+
+        if (otherInfo.every(user => user._id !== id)) {
+            dispatch(getUserInfo(id));
+        } else {
+            const newUser = otherInfo.find(user => user._id === id);
+            if (newUser) setOther(newUser);
+        }
+
+    }, [id, otherInfo, dispatch]);
+
+    if (!other) return <Loading />
+
     return (
-        <div>
-            OtherInfo!
+        <div className="profile_info text-center rounded">
+            <div className="info_avatar">
+                <img src={other.avatar} alt="avatar" />
+            </div>
+
+            <h5 className="text-uppercase text-danger">
+                {other.role}
+            </h5>
+
+            <div>
+                Name: <span className='text-info'>
+                    {other.name}
+                </span>
+            </div>
+
+            <div>Email / Phone number</div>
+            <span className="text-info">
+                {other.account}
+            </span>
+
+            <div>
+                Join Date: <span style={{ color: '#ffc107' }} >
+                    {new Date(other.createdAt).toLocaleString()}
+                </span>
+            </div>
         </div>
     )
 }

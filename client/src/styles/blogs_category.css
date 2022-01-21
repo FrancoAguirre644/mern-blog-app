@@ -1,0 +1,34 @@
+.blogs_category {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.blogs_category h3 a {
+    text-transform: uppercase;
+    color: darkblue;
+    letter-spacing: 3;
+    margin-top: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.blogs_category h3:hover a {
+    color: crimson;
+}
+
+.blogs_category h3 a small {
+    font-size: 15px;
+}
+
+.blogs_category .show_blogs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-gap: 10px;
+    margin-bottom: 15px;
+}
+
+.blogs_category .show_blogs .card a {
+    text-decoration: none;
+    text-transform: capitalize;
+}

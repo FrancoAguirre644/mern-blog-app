@@ -38,3 +38,6 @@ code {
 
 /****************** HOME *********************/
 @import url('./home.css');
+
+/****************** BLOGS CATEGORY ***********/
+@import url('./blogs_category.css');
