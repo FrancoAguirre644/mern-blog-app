@@ -15,6 +15,8 @@ export const getUserInfo = (id: string) => async (dispatch: Dispatch<IAlertType 
             payload: res.data
         });
 
+        dispatch({ type: ALERT, payload: { loading: false } });
+
     } catch (err: any) {
         dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }

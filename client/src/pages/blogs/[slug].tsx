@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import CardVert from '../../components/cards/CardVert';
 import NotFound from '../../components/global/NotFound';
+import Pagination from '../../components/global/Pagination';
 import { RootStore } from '../../interfaces/global';
 import { IBlog } from '../../interfaces/IBlog';
 import { IParams } from '../../interfaces/IParams';
@@ -19,6 +20,14 @@ const BlogsByCategory = () => {
     const [blogs, setBlogs] = useState<IBlog[]>();
     const [total, setTotal] = useState(0);
 
+    const history = useHistory();
+    const { search } = history.location;
+
+    const handlePagination = (num: number) => {
+        const search = `?page=${num}`;
+        dispatch(getBlogsByCategoryId(categoryId, search));
+    }
+
     useEffect(() => {
 
         const category = categories.find(item => item.name === slug);
@@ -30,16 +39,17 @@ const BlogsByCategory = () => {
         if (!categoryId) return;
 
         if (blogsCategory.every(item => item.id !== categoryId)) {
-            dispatch(getBlogsByCategoryId(categoryId));
+            dispatch(getBlogsByCategoryId(categoryId, search));
         } else {
             const data = blogsCategory.find(item => item.id === categoryId);
             if (!data) return;
 
             setBlogs(data.blogs);
             setTotal(data.total);
+            if (data.search) history.push(data.search);
         }
 
-    }, [categoryId, blogsCategory, dispatch]);
+    }, [categoryId, blogsCategory, dispatch, search, history]);
 
     if (!blogs) return <NotFound />
 
@@ -52,6 +62,14 @@ const BlogsByCategory = () => {
                     ))
                 }
             </div>
+
+            {
+                total > 1 &&
+                <Pagination
+                    total={total}
+                    callback={handlePagination}
+                />
+            }
         </div>
     )
 };
