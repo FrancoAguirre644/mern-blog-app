@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { ALERT, IAlertType } from "../types/alertType";
 import { getAPI } from "../../utils/fetchData";
-import { GET_BLOGS_BY_CATEGORY_ID, GET_HOME_BLOGS, IGetBlogsCategoryType, IGetHomeBlogsType } from "../types/blogType";
+import { GET_BLOGS_BY_CATEGORY_ID, GET_BLOGS_BY_USER_ID, GET_HOME_BLOGS, IGetBlogsCategoryType, IGetBlogsUserType, IGetHomeBlogsType } from "../types/blogType";
 
 export const getHomeBlogs = () => async (dispatch: Dispatch<IAlertType | IGetHomeBlogsType>) => {
     try {
@@ -32,6 +32,28 @@ export const getBlogsByCategoryId = (id: string, search: string) => async (dispa
         dispatch({
             type: GET_BLOGS_BY_CATEGORY_ID,
             payload: { ...res.data, id }
+        });
+
+        dispatch({ type: ALERT, payload: { loading: false } });
+
+    } catch (err: any) {
+        dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+}
+
+export const getBlogsByUserId = (id: string, search: string = `?page=${1}`) => async (dispatch: Dispatch<IAlertType | IGetBlogsUserType>) => {
+    try {
+
+        let limit = 3;
+        let value = search ? search : `?page=${1}`;
+
+        dispatch({ type: ALERT, payload: { loading: true } });
+
+        const res = await getAPI(`blogs/user/${id}${value}&limit=${limit}`);
+        
+        dispatch({
+            type: GET_BLOGS_BY_USER_ID,
+            payload: { ...res.data, id, search }
         });
 
         dispatch({ type: ALERT, payload: { loading: false } });
