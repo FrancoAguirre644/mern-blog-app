@@ -1,4 +1,4 @@
-import { CREATE_COMMENT, ICommentState, ICommentType } from "../types/commentType"
+import { CREATE_COMMENT, GET_COMMENTS, ICommentState, ICommentType } from "../types/commentType"
 
 const initialState = {
     data: [],
@@ -12,6 +12,8 @@ const commentReducer = (state: ICommentState = initialState, action: ICommentTyp
                 ...state,
                 data: [action.payload, ...state.data]
             }    
+        case GET_COMMENTS:
+            return action.payload
         default:
             return state;
     }

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootStore } from '../../interfaces/global';
 import { IBlog } from '../../interfaces/IBlog';
 import { IComment } from '../../interfaces/IComment';
 import { IUser } from '../../interfaces/IUser';
-import { createComment } from '../../redux/actions/commentAction';
+import { createComment, getComments } from '../../redux/actions/commentAction';
 import Comments from '../comments/Comments';
 import Input from '../comments/Input';
+import Loading from '../global/Loading';
 
 interface IProps {
     blog: IBlog
@@ -19,6 +20,7 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
     const dispatch = useDispatch();
 
     const [showComments, setShowComments] = useState<IComment[]>([]);
+    const [loading, setLoading] = useState(false);
 
     const handleComment = (body: string) => {
         if (!auth.user || !auth.access_token) return;
@@ -36,8 +38,21 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
     }
 
     useEffect(() => {
-        if(comments.data.length === 0) setShowComments(comments.data);
+        setShowComments(comments.data);
     }, [comments.data]);
+
+    const fetchComments = useCallback(async (id: string) => {
+        setLoading(true);
+        await dispatch(getComments(id));
+        setLoading(false);
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (!blog._id) return;
+
+        fetchComments(blog._id);
+
+    }, [blog._id, fetchComments]);
 
     return (
         <div>
@@ -75,9 +90,11 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
             }
 
             {
-                showComments?.map((comment, index) => (
-                    <Comments key={index} comment={comment}  />
-                ))
+                loading
+                    ? <Loading />
+                    : showComments?.map((comment, index) => (
+                        <Comments key={index} comment={comment} />
+                    ))
             }
 
         </div>
