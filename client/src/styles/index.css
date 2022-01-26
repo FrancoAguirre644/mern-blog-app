@@ -41,3 +41,6 @@ code {
 
 /****************** BLOGS CATEGORY ***********/
 @import url('./blogs_category.css');
+
+/****************** COMMENTS *****************/
+@import url('./comments.css');
