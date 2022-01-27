@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '../../interfaces/global';
 import { IComment } from '../../interfaces/IComment';
+import { replyComment } from '../../redux/actions/commentAction';
 import Input from './Input';
 
 interface IProps {
@@ -25,12 +26,12 @@ const CommentList: React.FC<IProps> = ({ children, comment, showReply, setShowRe
       blog_user_id: comment.blog_user_id,
       content: body,
       reply_user: comment.user,
-      comment_root: comment._id,
+      comment_root: comment.comment_root || comment._id,
       createdAt: new Date().toISOString()
     }
 
     setShowReply([...showReply, data]);
-
+    dispatch(replyComment(data, auth.access_token));
     setOnReply(false);
 
   }

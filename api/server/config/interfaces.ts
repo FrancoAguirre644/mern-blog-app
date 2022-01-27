@@ -25,7 +25,7 @@ export interface IDecodedToken {
 }
 
 export interface IReqAuth extends Request {
-    user?: IUser
+    user?: IUser;
 }
 
 export interface IComment extends Document {
@@ -35,5 +35,6 @@ export interface IComment extends Document {
     content: string;
     replyCM: string[];
     reply_user: string;
-    _doc: object
+    comment_root: string;
+    _doc: object;
 }
