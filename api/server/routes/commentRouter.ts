@@ -10,5 +10,6 @@ router.get('/comments/blog/:id', commentController.getComments);
 
 router.post('/comments/reply_comment', auth, commentController.replyComment);
 
+router.delete('/comments/:id', auth, commentController.deleteComment);
 
 export default router;

@@ -1,8 +1,8 @@
 import { Dispatch } from "react";
 import { IComment } from "../../interfaces/IComment";
-import { getAPI, postAPI } from "../../utils/fetchData";
+import { deleteAPI, getAPI, postAPI } from "../../utils/fetchData";
 import { ALERT, IAlertType } from "../types/alertType";
-import { CREATE_COMMENT, GET_COMMENTS, ICreateCommentType, IGetCommentsType, IReplyCommentType, REPLY_COMMENT } from "../types/commentType";
+import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REPLY, GET_COMMENTS, ICreateCommentType, IDeleteType, IGetCommentsType, IReplyCommentType, REPLY_COMMENT } from "../types/commentType";
 
 export const createComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | ICreateCommentType>) => {
     try {
@@ -25,8 +25,6 @@ export const getComments = (id: string, num: number) => async (dispatch: Dispatc
         let limit = 2;
 
         const res = await getAPI(`comments/blog/${id}?page=${num}&limit=${limit}`);
-
-        console.log(res);
 
         dispatch({
             type: GET_COMMENTS,
@@ -59,3 +57,19 @@ export const replyComment = (data: IComment, token: string) => async (dispatch: 
         dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
 }
+
+export const deleteComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | IDeleteType>) => {
+    try {
+
+        dispatch({
+            type: data.comment_root ? DELETE_REPLY : DELETE_COMMENT,
+            payload: data
+        });
+
+        await deleteAPI(`comments/${data._id}`, token);
+
+    } catch (err: any) {
+        dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+}
+

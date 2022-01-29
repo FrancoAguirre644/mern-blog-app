@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '../../interfaces/global';
 import { IComment } from '../../interfaces/IComment';
-import { replyComment } from '../../redux/actions/commentAction';
+import { deleteComment, replyComment } from '../../redux/actions/commentAction';
 import Input from './Input';
 
 interface IProps {
@@ -36,6 +36,25 @@ const CommentList: React.FC<IProps> = ({ children, comment, showReply, setShowRe
 
   }
 
+  const handleDelete = (comment: IComment) => {
+    if(!auth.user || !auth.access_token) return;
+
+    console.log('OK!')
+
+    dispatch(deleteComment(comment, auth.access_token));
+
+  }
+
+  const Nav = (comment: IComment) => {
+    return (
+      <div>
+        <i className="fas fa-trash-alt mx-2" 
+        onClick={() => handleDelete(comment)}/>
+        <i className="fas fa-edit me-2"/>
+      </div>
+    )
+  }
+
   return (
     <div className="w-100">
       <div className="comment_box">
@@ -49,8 +68,22 @@ const CommentList: React.FC<IProps> = ({ children, comment, showReply, setShowRe
             {onReply ? '- Cancel -' : '- Reply -'}
           </small>
 
-          <small>
-            {new Date(comment.createdAt).toLocaleString()}
+          <small className='d-flex' >
+
+            <div className="comment_nav">
+              {
+                comment.blog_user_id === auth.user?._id
+                ? comment.user._id === auth.user._id
+                  ? Nav(comment)
+                  : <i className="fas fa-trash-alt mx-2"
+                  onClick={() => handleDelete(comment)} />
+                : comment.user._id === auth.user?._id && Nav(comment)
+              }
+            </div>
+
+            <div>
+              {new Date(comment.createdAt).toLocaleString()}
+            </div>
           </small>
         </div>
       </div>
