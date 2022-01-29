@@ -24,8 +24,8 @@ const commentReducer = (state: ICommentState = initialState, action: ICommentTyp
                         ? {
                             ...item,
                             replyCM: [
-                                ...item.replyCM as [],
-                                action.payload
+                                action.payload,
+                                ...item.replyCM as []
                             ]
                         }
                         : item

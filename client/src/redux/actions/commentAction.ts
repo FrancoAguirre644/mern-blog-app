@@ -19,12 +19,14 @@ export const createComment = (data: IComment, token: string) => async (dispatch:
     }
 }
 
-export const getComments = (id: string) => async (dispatch: Dispatch<IAlertType | IGetCommentsType>) => {
+export const getComments = (id: string, num: number) => async (dispatch: Dispatch<IAlertType | IGetCommentsType>) => {
     try {
 
-        let limit = 8;
+        let limit = 2;
 
-        const res = await getAPI(`comments/blog/${id}?limit=${limit}`);
+        const res = await getAPI(`comments/blog/${id}?page=${num}&limit=${limit}`);
+
+        console.log(res);
 
         dispatch({
             type: GET_COMMENTS,
@@ -44,8 +46,6 @@ export const replyComment = (data: IComment, token: string) => async (dispatch: 
 
         const res = await postAPI('comments/reply_comment', data, token);
     
-        console.log(res);
-
         dispatch({
             type: REPLY_COMMENT,
             payload: { 
