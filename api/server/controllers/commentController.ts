@@ -192,7 +192,7 @@ const commentController = {
                 await Comments.findOneAndUpdate({ _id: comment.comment_root }, {
                     $pull: { replyCM: comment._id }
                 });
-                
+
             } else {
                 // Delete all comments in replyCM
                 await Comments.deleteMany({ _id: { $in: comment.replyCM } });
@@ -204,6 +204,26 @@ const commentController = {
             res.status(500).json({ msg: err.message });
         }
     },
+    updateComment: async (req: IReqAuth, res: Response) => {
+
+        if (!req.user) return res.status(400).json({ msg: 'Invalid Authentication.' });
+
+        try {
+
+            const { content } = req.body;
+
+            const comment = await Comments.findOneAndUpdate({
+                _id: req.params.id, user: req.user.id
+            }, { content });
+
+            if (!comment) return res.status(400).json({ msg: 'Comment does not exits.' });
+
+            return res.status(200).json({ msg: "Update Success!" });
+
+        } catch (err: any) {
+            res.status(500).json({ msg: err.message });
+        }
+    }
 }
 
 export default commentController;

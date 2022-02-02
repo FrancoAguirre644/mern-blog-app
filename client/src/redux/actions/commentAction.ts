@@ -1,8 +1,8 @@
 import { Dispatch } from "react";
 import { IComment } from "../../interfaces/IComment";
-import { deleteAPI, getAPI, postAPI } from "../../utils/fetchData";
+import { deleteAPI, getAPI, patchAPI, postAPI } from "../../utils/fetchData";
 import { ALERT, IAlertType } from "../types/alertType";
-import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REPLY, GET_COMMENTS, ICreateCommentType, IDeleteType, IGetCommentsType, IReplyCommentType, REPLY_COMMENT } from "../types/commentType";
+import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REPLY, GET_COMMENTS, ICreateCommentType, IDeleteType, IGetCommentsType, IReplyCommentType, IUpdateType, REPLY_COMMENT, UPDATE_COMMENT, UPDATE_REPLY } from "../types/commentType";
 
 export const createComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | ICreateCommentType>) => {
     try {
@@ -43,11 +43,11 @@ export const replyComment = (data: IComment, token: string) => async (dispatch: 
     try {
 
         const res = await postAPI('comments/reply_comment', data, token);
-    
+
         dispatch({
             type: REPLY_COMMENT,
-            payload: { 
-                ...res.data, 
+            payload: {
+                ...res.data,
                 user: data.user,
                 reply_user: data.reply_user
             }
@@ -57,6 +57,24 @@ export const replyComment = (data: IComment, token: string) => async (dispatch: 
         dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
 }
+
+export const updateComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | IUpdateType>) => {
+    try {
+
+        dispatch({
+            type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
+            payload: data
+        });
+
+        await patchAPI(`comments/${data._id}`, {
+            content: data.content
+        }, token);
+
+    } catch (err: any) {
+        dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+}
+
 
 export const deleteComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | IDeleteType>) => {
     try {

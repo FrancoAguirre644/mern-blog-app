@@ -1,20 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { IComment } from '../../interfaces/IComment';
 import LiteQuill from '../editor/LiteQuill';
 
 interface IProps {
     callback: (body: string) => void;
+    edit?: IComment;
+    setEdit?: (edit?: IComment) => void;
 }
 
-const Input: React.FC<IProps> = ({ callback }) => {
+const Input: React.FC<IProps> = ({ callback, edit, setEdit }) => {
 
     const [body, setBody] = useState('');
     const divRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (edit) setBody(edit.content);
+    }, [edit]);
 
     const handleSubmit = () => {
         const div = divRef.current;
         const text = (div?.innerHTML as string);
 
-        if (!text.trim()) return;
+        if (!text.trim()) {
+            if(setEdit) return setEdit(undefined);
+            return;
+        }
 
         callback(body);
 
@@ -31,7 +41,7 @@ const Input: React.FC<IProps> = ({ callback }) => {
 
             <button className="btn btn-dark ms-auto d-block px-4 mt-2"
                 onClick={handleSubmit}>
-                Send
+                {edit ? 'Update' : 'Send'}
             </button>
         </div>
     )
