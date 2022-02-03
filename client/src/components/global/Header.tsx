@@ -6,7 +6,8 @@ import Search from './Search';
 const Header = () => {
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light"
+        style={{ position: 'sticky', top: 0, left: 0, zIndex: 9 }}>
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">Blog</Link>
 

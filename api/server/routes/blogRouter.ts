@@ -14,4 +14,6 @@ router.get('/blogs/user/:id', blogController.getBlogsByUser);
 
 router.get('/blogs/:id', blogController.getBlog);
 
+router.get('/search/blogs', blogController.searchBlogs);
+
 export default router;
