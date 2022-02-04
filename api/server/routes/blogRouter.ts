@@ -12,7 +12,10 @@ router.get('/blogs/category/:id', blogController.getBlogsByCategory);
 
 router.get('/blogs/user/:id', blogController.getBlogsByUser);
 
-router.get('/blogs/:id', blogController.getBlog);
+router.route('/blogs/:id')
+    .get(blogController.getBlog)
+    .put(auth, blogController.updateBlog)
+    .delete(auth, blogController.deleteBlog)
 
 router.get('/search/blogs', blogController.searchBlogs);
 

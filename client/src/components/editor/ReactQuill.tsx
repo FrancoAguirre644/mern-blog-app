@@ -6,10 +6,11 @@ import { ALERT } from '../../redux/types/alertType';
 import { checkImage, imageUpload } from '../../utils/imageUpload';
 
 interface IProps {
-    setBody: (value: string) => void
+    setBody: (value: string) => void;
+    body: string;
 }
 
-const Quill: React.FC<IProps> = ({ setBody }) => {
+const Quill: React.FC<IProps> = ({ setBody, body }) => {
 
     const dispatch = useDispatch();
 
@@ -69,6 +70,7 @@ const Quill: React.FC<IProps> = ({ setBody }) => {
                 placeholder='write somethings...'
                 onChange={e => setBody(e)}
                 ref={quillRef}
+                value={body}
             />
         </div>
     )
