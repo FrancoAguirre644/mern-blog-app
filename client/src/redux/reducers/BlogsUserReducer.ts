@@ -1,7 +1,7 @@
 import { IUser } from "../../interfaces/IUser";
-import { DELETE_BLOGS_BY_USER_ID, GET_BLOGS_BY_USER_ID, IBlogsUser, IDeleteBlogsUserType, IGetBlogsUserType } from "../types/blogType";
+import { CREATE_BLOGS_BY_USER_ID, DELETE_BLOGS_BY_USER_ID, GET_BLOGS_BY_USER_ID, IBlogsUser, ICreateBlogsUserType, IDeleteBlogsUserType, IGetBlogsUserType } from "../types/blogType";
 
-const blogsUserReducer = (state: IBlogsUser[] = [], action: IGetBlogsUserType | IDeleteBlogsUserType): IBlogsUser[] => {
+const blogsUserReducer = (state: IBlogsUser[] = [], action: IGetBlogsUserType | ICreateBlogsUserType |IDeleteBlogsUserType): IBlogsUser[] => {
     switch (action.type) {
         case GET_BLOGS_BY_USER_ID:
             if (state.every(item => item.id !== action.payload.id)) {
@@ -14,6 +14,16 @@ const blogsUserReducer = (state: IBlogsUser[] = [], action: IGetBlogsUserType | 
                         : item
                 ))
             }
+
+        case CREATE_BLOGS_BY_USER_ID:
+            return state.map(item => (
+                item.id === (action.payload.user as IUser)._id
+                ? {
+                    ...item,
+                    blogs: [action.payload, ...item.blogs]
+                }
+                : item
+            ))
 
         case DELETE_BLOGS_BY_USER_ID:
             return state.map(item => (

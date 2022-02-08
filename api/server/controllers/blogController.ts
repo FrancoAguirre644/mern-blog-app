@@ -32,7 +32,10 @@ const blogController = {
 
             await newBlog.save();
 
-            res.status(200).json({ newBlog });
+            res.status(200).json({ 
+                ...newBlog._doc,
+                user: req.user
+            });
 
         } catch (err: any) {
             return res.status(500).json({ msg: err.message });

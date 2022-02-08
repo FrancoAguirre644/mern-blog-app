@@ -1,9 +1,39 @@
 import { Dispatch } from "redux";
 import { ALERT, IAlertType } from "../types/alertType";
-import { deleteAPI, getAPI, putAPI } from "../../utils/fetchData";
-import { DELETE_BLOGS_BY_USER_ID, GET_BLOGS_BY_CATEGORY_ID, GET_BLOGS_BY_USER_ID, GET_HOME_BLOGS, IDeleteBlogsUserType, IGetBlogsCategoryType, IGetBlogsUserType, IGetHomeBlogsType } from "../types/blogType";
+import { deleteAPI, getAPI, postAPI, putAPI } from "../../utils/fetchData";
+import { CREATE_BLOGS_BY_USER_ID, DELETE_BLOGS_BY_USER_ID, GET_BLOGS_BY_CATEGORY_ID, GET_BLOGS_BY_USER_ID, GET_HOME_BLOGS, ICreateBlogsUserType, IDeleteBlogsUserType, IGetBlogsCategoryType, IGetBlogsUserType, IGetHomeBlogsType } from "../types/blogType";
 import { IBlog } from "../../interfaces/IBlog";
 import { imageUpload } from "../../utils/imageUpload";
+
+export const createBlog = (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType | ICreateBlogsUserType>) => {
+    let url;
+
+    try {
+
+        dispatch({ type: ALERT, payload: { loading: true } });
+
+        if(typeof(blog.thumbnail) !== 'string') {
+            const photo = await imageUpload(blog.thumbnail);
+            url = photo.url;
+        } else {
+            url = blog.thumbnail;
+        } 
+
+        const newBlog = {...blog, thumbnail: url };
+
+        const res = await postAPI('blogs', newBlog, token);
+
+        dispatch({
+            type: CREATE_BLOGS_BY_USER_ID,
+            payload: res.data
+        })
+
+        dispatch({ type: ALERT, payload: { loading: false } });
+
+    } catch (err: any) {
+        dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
+    }
+}
 
 export const getHomeBlogs = () => async (dispatch: Dispatch<IAlertType | IGetHomeBlogsType>) => {
     try {
@@ -92,7 +122,7 @@ export const updateBlog = (blog: IBlog, token: string) => async (dispatch: Dispa
 }
 
 export const deleteBlog = (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType | IDeleteBlogsUserType>) => {
- 
+
     try {
 
         dispatch({ type: ALERT, payload: { loading: true } });
