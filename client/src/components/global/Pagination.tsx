@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 interface IProps {
-    total: number
-    callback: (num:number) => void
+    total: number;
+    callback: (num:number) => void;
 }
 
 const Pagination: React.FC<IProps> = ({ total, callback }) => {
@@ -50,7 +50,7 @@ const Pagination: React.FC<IProps> = ({ total, callback }) => {
                     newArr.map(num => (
                         <li className={`page-item ${isActive(num)}`} key={num}
                             onClick={() => handlePagination(num)}>
-                            <a className="page-link">{num}</a>
+                            <span className="page-link">{num}</span>
                         </li>
                     ))
                 }

@@ -2,17 +2,19 @@ import { Dispatch } from "react";
 import { IComment } from "../../interfaces/IComment";
 import { deleteAPI, getAPI, patchAPI, postAPI } from "../../utils/fetchData";
 import { ALERT, IAlertType } from "../types/alertType";
-import { CREATE_COMMENT, DELETE_COMMENT, DELETE_REPLY, GET_COMMENTS, ICreateCommentType, IDeleteType, IGetCommentsType, IReplyCommentType, IUpdateType, REPLY_COMMENT, UPDATE_COMMENT, UPDATE_REPLY } from "../types/commentType";
+import { GET_COMMENTS, ICreateCommentType, IDeleteType, IGetCommentsType, IReplyCommentType, IUpdateType } from "../types/commentType";
 
 export const createComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | ICreateCommentType>) => {
     try {
 
-        const res = await postAPI('comments', data, token);
+        await postAPI('comments', data, token);
 
+        /*
         dispatch({
             type: CREATE_COMMENT,
             payload: { ...res.data, user: data.user }
         });
+        */
 
     } catch (err: any) {
         dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
@@ -42,8 +44,9 @@ export const getComments = (id: string, num: number) => async (dispatch: Dispatc
 export const replyComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | IReplyCommentType>) => {
     try {
 
-        const res = await postAPI('comments/reply_comment', data, token);
+        await postAPI('comments/reply_comment', data, token);
 
+        /*
         dispatch({
             type: REPLY_COMMENT,
             payload: {
@@ -52,6 +55,7 @@ export const replyComment = (data: IComment, token: string) => async (dispatch: 
                 reply_user: data.reply_user
             }
         });
+        */
 
     } catch (err: any) {
         dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
@@ -61,14 +65,14 @@ export const replyComment = (data: IComment, token: string) => async (dispatch: 
 export const updateComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | IUpdateType>) => {
     try {
 
+        /*
         dispatch({
             type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
             payload: data
         });
+        */
 
-        await patchAPI(`comments/${data._id}`, {
-            content: data.content
-        }, token);
+        await patchAPI(`comments/${data._id}`, { data }, token);
 
     } catch (err: any) {
         dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
@@ -79,10 +83,12 @@ export const updateComment = (data: IComment, token: string) => async (dispatch:
 export const deleteComment = (data: IComment, token: string) => async (dispatch: Dispatch<IAlertType | IDeleteType>) => {
     try {
 
+        /*
         dispatch({
             type: data.comment_root ? DELETE_REPLY : DELETE_COMMENT,
             payload: data
         });
+        */
 
         await deleteAPI(`comments/${data._id}`, token);
 

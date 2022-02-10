@@ -4,7 +4,7 @@ import { IUser } from '../../interfaces/IUser';
 
 interface IProps {
     user: IUser;
-    reply_user?: IUser
+    reply_user?: IUser;
 }
 
 const AvatarReply: React.FC<IProps> = ({ user, reply_user }) => {

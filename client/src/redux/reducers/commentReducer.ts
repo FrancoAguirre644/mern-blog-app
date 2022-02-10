@@ -25,13 +25,12 @@ const commentReducer = (state: ICommentState = initialState, action: ICommentTyp
                             ...item,
                             replyCM: [
                                 action.payload,
-                                ...item.replyCM as []
+                                ...item.replyCM
                             ]
                         }
                         : item
                 ))
             }
-
 
         case UPDATE_COMMENT:
             return {

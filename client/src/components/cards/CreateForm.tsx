@@ -4,13 +4,13 @@ import { RootStore } from '../../interfaces/global'
 import { IBlog } from '../../interfaces/IBlog';
 
 interface IProps {
-    blog: IBlog,
-    setBlog: (blog: IBlog) => void
+    blog: IBlog;
+    setBlog: (blog: IBlog) => void;
 }
 
 const CreateForm: React.FC<IProps> = ({ blog, setBlog }) => {
 
-    const { categories } = useSelector((state: RootStore) => state);;
+    const { categories } = useSelector((state: RootStore) => state);
 
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { value, name } = e.target;
@@ -18,11 +18,11 @@ const CreateForm: React.FC<IProps> = ({ blog, setBlog }) => {
     }
 
     const handleChangeThumbnail = (e: ChangeEvent<HTMLInputElement>) => {
-        const target = e.target as HTMLInputElement
-        const files = target.files
+        const target = e.target as HTMLInputElement;
+        const files = target.files;
         if (files) {
-            const file = files[0]
-            setBlog({ ...blog, thumbnail: file })
+            const file = files[0];
+            setBlog({ ...blog, thumbnail: file });
         }
     }
 

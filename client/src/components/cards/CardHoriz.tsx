@@ -8,7 +8,7 @@ import { IUser } from '../../interfaces/IUser'
 import { deleteBlog } from '../../redux/actions/blogAction'
 
 interface IProps {
-    blog: IBlog
+    blog: IBlog;
 }
 
 const CardHoriz: React.FC<IProps> = ({ blog }) => {

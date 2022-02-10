@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { IBlog } from '../../interfaces/IBlog';
 
 interface IProps {
-    blog: IBlog
+    blog: IBlog;
 }
 
 const CardVert: React.FC<IProps> = ({ blog }) => {

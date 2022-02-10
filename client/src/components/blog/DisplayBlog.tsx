@@ -12,7 +12,7 @@ import Loading from '../global/Loading';
 import Pagination from '../global/Pagination';
 
 interface IProps {
-    blog: IBlog
+    blog: IBlog;
 }
 
 const DisplayBlog: React.FC<IProps> = ({ blog }) => {
@@ -33,6 +33,7 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
             user: auth.user,
             blog_id: (blog._id as string),
             blog_user_id: (blog.user as IUser)._id,
+            replyCM: [],
             createdAt: new Date().toISOString()
         }
 
@@ -60,7 +61,7 @@ const DisplayBlog: React.FC<IProps> = ({ blog }) => {
 
         fetchComments(blog._id, num);
 
-    }, [blog._id, fetchComments]);
+    }, [blog._id, fetchComments, history]);
 
     const handlePagination = (num: number) => {
         if (!blog._id) return;

@@ -10,7 +10,6 @@ import { getAPI } from '../utils/fetchData';
 import { createBlog, updateBlog } from '../redux/actions/blogAction';
 import { shallowEqual, validCreateBlog } from '../utils/valid';
 import { ALERT } from '../redux/types/alertType';
-import { imageUpload } from '../utils/imageUpload';
 import { IUser } from '../interfaces/IUser';
 
 interface IProps {
@@ -35,7 +34,7 @@ const CreateBlog: React.FC<IProps> = ({ id }) => {
     const divRef = useRef<HTMLDivElement>(null);
     const [text, setText] = useState('');
 
-    const { auth, categories } = useSelector((state: RootStore) => state);
+    const { auth } = useSelector((state: RootStore) => state);
     const dispatch = useDispatch();
 
     const [oldData, setOldData] = useState<IBlog>(initState);

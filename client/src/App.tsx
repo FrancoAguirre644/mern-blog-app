@@ -10,6 +10,8 @@ import { getCategories } from './redux/actions/categoryAction';
 
 import io from 'socket.io-client';
 
+import SocketClient from './SocketClient';
+
 function App() {
 
   const dispatch = useDispatch();
@@ -28,6 +30,7 @@ function App() {
 
   return (
     <div className="container">
+      <SocketClient />
       <Router>
         <Header />
         <Alert />

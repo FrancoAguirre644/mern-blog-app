@@ -5,7 +5,7 @@ import AvatarReply from './AvatarReply';
 import CommentList from './CommentList';
 
 interface IProps {
-  comment: IComment
+  comment: IComment;
 }
 
 const Comments: React.FC<IProps> = ({ comment }) => {

@@ -2,9 +2,9 @@ import { useDispatch } from 'react-redux'
 import { ALERT } from '../../redux/types/alertType'
 
 interface IProps {
-    title: string
-    body: string | string[]
-    bgColor: string
+    title: string;
+    body: string | string[];
+    bgColor: string;
 }
 
 const Toast = ({ title, body, bgColor }: IProps) => {

@@ -6,7 +6,7 @@ import { getUserInfo } from '../../redux/actions/profileAction';
 import Loading from '../alert/Loading';
 
 interface IProps {
-    id: string
+    id: string;
 }
 
 const OtherInfo: React.FC<IProps> = ({ id }) => {

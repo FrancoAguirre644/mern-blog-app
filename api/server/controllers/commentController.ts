@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import mongoose from "mongoose";
 import { IReqAuth } from "../config/interfaces";
 import Comments from "../models/commentModel";
+import { io } from '../index';
 
 const Pagination = (req: IReqAuth) => {
     let page = Number(req.query.page) * 1 || 1;
@@ -26,6 +27,14 @@ const commentController = {
                 blog_id,
                 blog_user_id
             });
+
+            const data = {
+                ...newComment._doc,
+                user: req.user,
+                createdAt: new Date().toISOString()
+            }
+
+            io.to(`${blog_id}`).emit('createComment', data);
 
             await newComment.save();
 
@@ -162,6 +171,15 @@ const commentController = {
                 $push: { replyCM: newComment._id }
             });
 
+            const data = {
+                ...newComment._doc,
+                user: req.user,
+                reply_user: reply_user,
+                createdAt: new Date().toISOString()
+            }
+
+            io.to(`${blog_id}`).emit('replyComment', data);
+
             await newComment.save();
 
             return res.status(200).json(newComment);
@@ -198,6 +216,8 @@ const commentController = {
                 await Comments.deleteMany({ _id: { $in: comment.replyCM } });
             }
 
+            io.to(`${comment.blog_id}`).emit('deleteComment', comment);
+
             return res.status(200).json({ msg: "Delete Success!" });
 
         } catch (err: any) {
@@ -210,13 +230,15 @@ const commentController = {
 
         try {
 
-            const { content } = req.body;
+            const { data } = req.body;
 
             const comment = await Comments.findOneAndUpdate({
                 _id: req.params.id, user: req.user.id
-            }, { content });
+            }, { content: data.content });
 
             if (!comment) return res.status(400).json({ msg: 'Comment does not exits.' });
+
+            io.to(`${data.blog_id}`).emit('updateComment', data);
 
             return res.status(200).json({ msg: "Update Success!" });
 
