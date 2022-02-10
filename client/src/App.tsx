@@ -8,6 +8,8 @@ import { refreshToken } from './redux/actions/authAction';
 import { getHomeBlogs } from './redux/actions/blogAction';
 import { getCategories } from './redux/actions/categoryAction';
 
+import io from 'socket.io-client';
+
 function App() {
 
   const dispatch = useDispatch();
@@ -16,6 +18,12 @@ function App() {
     dispatch(refreshToken());
     dispatch(getCategories());
     dispatch(getHomeBlogs());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const socket = io();
+    dispatch({ type: 'SOCKET', payload: socket });
+    return () => { socket.close() }
   }, [dispatch]);
 
   return (
