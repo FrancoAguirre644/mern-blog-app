@@ -6,6 +6,7 @@ import { generateAccessToken, generateActiveToken, generateRefreshToken } from '
 import { validateEmail, validPhone } from '../middleware/valid';
 import { sendSms } from '../config/sendSMS';
 import { IDecodedToken, IUser } from '../config/interfaces';
+import sendEmail from '../config/sendMail';
 
 const CLIENT_URL = `${process.env.BASE_URL}`
 
@@ -19,19 +20,19 @@ const authController = {
 
             const passwordHash = await bcrypt.hash(password, 12);
 
-            const newUser = { name, account, password: passwordHash }
+            const newUser = { name, account, password: passwordHash };
 
-            const active_token = generateActiveToken({ newUser })
+            const active_token = generateActiveToken({ newUser });
 
-            const url = `${CLIENT_URL}/active/${active_token}`
+            const url = `${CLIENT_URL}/active/${active_token}`;
 
             if (validateEmail(account)) {
-                //sendMail(account, url, "Verify your email address")
-                return res.json({ msg: "Success! Please check your email." })
+                sendEmail(account, url, "Verify your email address");
+                return res.json({ msg: "Success! Please check your email." });
 
             } else if (validPhone(account)) {
-                //sendSms(account, url, "Verify your phone number")
-                return res.json({ msg: "Success! Please check phone.", active_token })
+                sendSms(account, url, "Verify your phone number")
+                return res.json({ msg: "Success! Please check phone.", active_token });
             }
 
             res.status(200).json({
