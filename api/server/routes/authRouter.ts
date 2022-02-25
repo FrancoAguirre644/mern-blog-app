@@ -14,4 +14,8 @@ router.get('/logout', authController.logout);
 
 router.get('/refresh_token', authController.refreshToken);
 
+router.post('/login_sms', authController.loginSMS);
+
+router.post('/sms_verify', authController.smsVerify);
+
 export default router;

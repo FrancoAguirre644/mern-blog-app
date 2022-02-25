@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import { generateAccessToken, generateActiveToken, generateRefreshToken } from '../config/generateToken';
 import { validateEmail, validPhone } from '../middleware/valid';
-import { sendSms } from '../config/sendSMS';
+import { sendSms, smsOTP, smsVerify } from '../config/sendSMS';
 import { IDecodedToken, IUser } from '../config/interfaces';
 import sendEmail from '../config/sendMail';
 
@@ -59,7 +59,7 @@ const authController = {
 
             const user = await Users.findOne({ account: newUser.account });
             if (user) return res.status(400).json({ msg: "This user already have an account." })
-            
+
             const new_user = new Users(newUser);
 
             await new_user.save();
@@ -112,11 +112,46 @@ const authController = {
             return res.status(500).json({ msg: err.message });
         }
     },
+    loginSMS: async (req: Request, res: Response) => {
+        try {
+
+            const { phone } = req.body;
+
+            const user = await Users.findOne({ account: phone });
+            if (!user) return res.status(400).json({ msg: 'This account does not exists.' });
+
+            const data = await smsOTP(phone, 'sms');
+
+            res.json(data);
+
+        } catch (err: any) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
+    smsVerify: async (req: Request, res: Response) => {
+        try {
+
+            const { phone, code } = req.body;
+
+            const data = await smsVerify(phone, code);
+
+            if (!data?.valid) return res.status(400).json({ msg: "Invalid Authentication." });
+
+            const password = phone + 'your phone secret password';
+
+            const user = await Users.findOne({ account: phone });
+
+            if (user) loginUser(user, password, res, true);
+
+        } catch (err: any) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
 }
 
-const loginUser = async (user: IUser, password: string, res: Response) => {
+const loginUser = async (user: IUser, password: string, res: Response, isLoginSMS: boolean = false) => {
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(500).json({ msg: 'Password is incorrect.' });
+    if (!isMatch && !isLoginSMS) return res.status(500).json({ msg: 'Password is incorrect.' });
 
     const access_token = generateAccessToken({ id: user._id });
     const refresh_token = generateRefreshToken({ id: user._id });
@@ -132,7 +167,6 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
         access_token,
         user: { ...user._doc, password: '' }
     })
-
 
 }
 
