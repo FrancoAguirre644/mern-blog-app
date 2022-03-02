@@ -55,6 +55,13 @@ const BlogsByCategory = () => {
 
     return (
         <div className="blogs_category">
+
+            <div className="col-12">
+                <div className="shadow p-3 mb-3 bg-white font-weight-bold rounded text-mda-negro border-bottom border-5 border-primary">
+                    { slug.toUpperCase() }
+                </div>
+            </div>
+
             <div className="show_blogs">
                 {
                     blogs.map(blog => (

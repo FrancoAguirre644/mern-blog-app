@@ -76,6 +76,8 @@ export const logout = () => async (dispatch: Dispatch<IAuthType | IAlertType>) =
         dispatch({ type: AUTH, payload: {} });
         await getAPI('logout');
 
+        dispatch({ type: ALERT, payload: { success: 'Logout successfully.' } });
+
     } catch (error: any) {
         dispatch({ type: ALERT, payload: { errors: error.response.data.msg } });
     }
@@ -92,8 +94,6 @@ export const loginSMS = (phone: string) => async (dispatch: Dispatch<IAuthType |
         dispatch({ type: ALERT, payload: { loading: true } });
 
         const res = await postAPI('login_sms', { phone });
-
-        console.log(res);
 
         if (!res.data.valid) verifySMS(phone, dispatch);
 

@@ -44,7 +44,6 @@ const CreateBlog: React.FC<IProps> = ({ id }) => {
 
         getAPI(`blogs/${id}`)
             .then(res => {
-                console.log(res);
                 setBlog(res.data);
                 setBody(res.data.content);
                 setOldData(res.data);
