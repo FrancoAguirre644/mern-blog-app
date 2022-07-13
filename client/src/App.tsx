@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Alert } from './components/alert/Alert';
 import Header from './components/global/Header';
@@ -11,6 +12,10 @@ import { getCategories } from './redux/actions/categoryAction';
 import io from 'socket.io-client';
 
 import SocketClient from './SocketClient';
+
+axios.defaults.baseURL = 'https://wallet-alkemy-fullstack.herokuapp.com';
+
+axios.defaults.withCredentials = true;
 
 function App() {
 
