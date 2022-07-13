@@ -13,7 +13,7 @@ import io from 'socket.io-client';
 
 import SocketClient from './SocketClient';
 
-axios.defaults.baseURL = 'https://wallet-alkemy-fullstack.herokuapp.com';
+axios.defaults.baseURL = 'https://blog-node-dev-api.herokuapp.com';
 
 axios.defaults.withCredentials = true;
 
