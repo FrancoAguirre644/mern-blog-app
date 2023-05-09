@@ -15,9 +15,13 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
 app.use(morgan('dev'));
 app.use(cookieParser());
+
+app.use(cors({
+    origin: `${process.env.BASE_URL}`,
+    credentials: true
+}));
 
 // Socket.io
 const http = createServer(app);
